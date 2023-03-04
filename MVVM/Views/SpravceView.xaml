@@ -1,202 +1,402 @@
 ﻿<UserControl x:Class="GrammerMaterialOrder.MVVM.Views.SpravceView"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
-             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:local="clr-namespace:GrammerMaterialOrder.MVVM.Views"
              mc:Ignorable="d" 
-             d:DesignHeight="450" d:DesignWidth="800" Loaded="UserControl_Loaded">
-    <Grid>
+             Loaded="UserControl_Loaded">
+    <Grid Name="SpravceViewGrid">
         <Grid.RowDefinitions>
-            <RowDefinition Height = "60" />
             <RowDefinition Height = "Auto" />
         </Grid.RowDefinitions>
-        <Label Name="nadpisLabel"
-               Content="Správce"
-               FontSize="28"
-               Grid.Row="0"
-               Margin="10,0,0,0" />
-        <TabControl Grid.Row="1"
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width = "Auto" />
+        </Grid.ColumnDefinitions>
+
+        <TabControl Grid.Row="0"
                     FontSize="14"
-                    Width="auto"
-                    Height="420">
+                    VerticalAlignment="Stretch"
+                    Height="480"
+                    Width="960"
+                    IsSynchronizedWithCurrentItem="True">
             <TabItem Header="Plánovač">
-                <StackPanel Orientation="Vertical">
-                    <Label Name="skladnikLabel"
+                <Grid x:Name="PlanovacGrid">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="250" />
+                        <ColumnDefinition Width="*" />
+                    </Grid.ColumnDefinitions>
+                    <StackPanel Orientation="Vertical"
+                                Grid.Column="0">
+                        <Label Name="skladnikLabel"
                            Content="Skladník"
                            FontSize="14"
                            Margin="10,0,0,0" />
-                    <ComboBox x:Name="SkladnikPlanovacComboBox"
+                        <ComboBox x:Name="SkladnikPlanovacComboBox"
                               Height="25"
-                              ItemsSource="{Binding Path=EmployeeEntries}"
+                              ItemsSource="{Binding Path=EmployeeWarehousemanEntries}"
                               DisplayMemberPath="FullName"
                               SelectedValuePath="Id"
-                              SelectedValue="{Binding Path=Employee}"
                               VerticalAlignment="Top"
                               HorizontalAlignment="Left"
                               Width="200"
-                              Margin="10,0,0,10" />
-
-                    <!--SelectionChanged="SkladnikComboBox_SelectionChanged"-->
-                    <Label Name="stanovisteLabel"
+                              Margin="10,0,0,0"
+                              IsEditable="True"
+                              IsReadOnly="True"
+                              Text="Vybrat skladníka"/>
+                        <!--SelectedValue="{Binding Path=Employee}"-->
+                        <!--SelectionChanged="SkladnikComboBox_SelectionChanged"-->
+                        <Label Name="stanovisteLabel"
                            Content="Stanoviště"
                            FontSize="14"
                            Margin="10,0,0,0" />
-                    <ComboBox x:Name="StanovisteComboBox"
+                        <ComboBox x:Name="StanovistePlanovacComboBox"
                               Height="25"
-                              ItemsSource="{Binding Path=StationEntries}"
+                              ItemsSource="{Binding Path=StationsList}"
                               DisplayMemberPath="Name"
                               SelectedValuePath="Id"
-                              SelectedValue="{Binding Path=Station}"
+                              SelectedValue="{Binding StationPridelenoEntries}"
                               VerticalAlignment="Top"
                               HorizontalAlignment="Left"
                               Width="200"
-                              Margin="10,0,0,10" />
-
-                    <StackPanel Orientation="Horizontal"
-                        HorizontalAlignment="Left"
-                        Margin="0,0,10,0"
-                        VerticalAlignment="Top">
+                              Margin="10,0,0,0"
+                              IsEditable="True"
+                              IsReadOnly="True"
+                              Text="Vybrat stanoviště"/>
+                        <!--ItemsSource="{Binding Path=StationEntries}"-->
+                        <!--ItemsSource="{Binding Path=StationsList}"
+                                    DisplayMemberPath="Name"
+                                    SelectedValuePath="Id"
+                                    SelectedValue="{Binding StationPridelenoEntries}"-->
+                        <!--SelectedValue="{Binding Path=Station}"-->
                         <Label Name="datumPlanuLabel"
                            Content="Datum naplánování"
                            FontSize="14"
                            Margin="10,0,70,0" />
-                        <Label Name="casPlanuLabel"
-                           Content="Čas naplánování"
-                           FontSize="14"
-                           Margin="10,0,0,0" />
-                    </StackPanel>
 
-                    <StackPanel Orientation="Horizontal"
-                        HorizontalAlignment="Left"
-                        Margin="0,0,10,0"
-                        VerticalAlignment="Top">
-                        <DatePicker x:Name="casovaZnackaDatePicker"
+                        <DatePicker x:Name="CasovaZnackaDatePicker"
                                 Width="200"
                                 VerticalAlignment="Top"
                                 HorizontalAlignment="Left"
-                                Margin="10,0,10,10" />
-                        <ComboBox x:Name="CasPlanovacComboBox"
+                                Margin="10,0,10,0" 
+                                FirstDayOfWeek="Monday" />
+                        <Label Name="casPlanuOdLabel"
+                           Content="Čas naplánování Od"
+                           FontSize="14"
+                           Margin="10,0,0,0" />
+                        <ComboBox x:Name="CasPlanovacOdComboBox"
                               Height="25"
-                              ItemsSource="{Binding Path=StationEntries}"
-                              DisplayMemberPath="Name"
-                              SelectedValuePath="Id"
-                              SelectedValue="{Binding Path=Station}"
+                              DisplayMemberPath="CasNaplanovaniOdDo"
+                              SelectedValuePath="CasNaplanovaniOdDoHodnota"
                               VerticalAlignment="Top"
                               HorizontalAlignment="Left"
                               Width="100"
-                              Margin="0,0,0,10" />
-                    </StackPanel>
+                              Margin="10,0,0,0"
+                              Loaded="CasPlanovacOdComboBox_Loaded" />
 
-                    <Button x:Name="ulozitNovyPlanButton"
+                        <Label Name="casPlanuDoLabel"
+                           Content="Čas naplánování Do"
+                           FontSize="14"
+                           Margin="10,0,0,0" />
+                        <ComboBox x:Name="CasPlanovacDoComboBox"
+                              Height="25"
+                              DisplayMemberPath="CasNaplanovaniOdDo"
+                              SelectedValuePath="CasNaplanovaniOdDoHodnota"
+                              VerticalAlignment="Top"
+                              HorizontalAlignment="Left"
+                              Width="100"
+                              Margin="10,0,0,10" Loaded="CasPlanovacDoComboBox_Loaded" />
+                        <Button x:Name="UlozitPlanButton"
                             Content="Uložit plán"
                             Width="200"
                             Height="30"
                             VerticalAlignment="Top"
                             HorizontalAlignment="Left"
-                            Margin="10,10,10,10"
-                            Click="UlozitPlanButton_Click">
-                    </Button>
-                </StackPanel>
+                            Margin="10,0,10,10"
+                            Click="UlozitPlanButton_Click" />
+                        <Button x:Name="NovyPlanButton"
+                            Content="Nový plán"
+                            Width="200"
+                            Height="30"
+                            VerticalAlignment="Top"
+                            HorizontalAlignment="Left"
+                            Margin="10,0,10,10"
+                            Click="NovyPlanButton_Click" />
+                        <Button x:Name="AktualizovatPlanButton"
+                            Content="Oprava plánu"
+                            Width="200"
+                            Height="30"
+                            VerticalAlignment="Top"
+                            HorizontalAlignment="Left"
+                            Margin="10,0,10,10"
+                            Click="AktualizovatPlanButton_Click"/>
+                        <Button x:Name="OdebratNovyPlanButton"
+                            Content="Odebrat plán"
+                            Width="200"
+                            Height="30"
+                            VerticalAlignment="Top"
+                            HorizontalAlignment="Left"
+                            Margin="10,0,10,0"
+                            Click="OdebratNovyPlanButton_Click"/>
+                    </StackPanel>
+
+                    <DataGrid x:Name="PlanovacDataGrid"
+                                  Grid.Column="1"
+                  HorizontalAlignment="Stretch"
+                  VerticalAlignment="Stretch"
+                  Margin="10,10,10,10"
+                  Background="LightGray"
+                  RowBackground="LightYellow"
+                  AlternatingRowBackground="LightBlue"
+                  CanUserReorderColumns="false"
+                  SelectionMode="Single"
+                  IsReadOnly="true"
+                  HeadersVisibility="All"
+                  RowHeaderWidth="27"
+                  AutoGenerateColumns="False"
+                  CanUserResizeColumns="False"
+                  CanUserResizeRows="False"
+                  ItemsSource="{Binding Path=ScheduleList}">
+                        <!-- nastavení zvýreznění rádky po ztrátě focusu-->
+                        <DataGrid.Resources>
+                            <SolidColorBrush x:Key="{x:Static SystemColors.InactiveSelectionHighlightBrushKey}" 
+                           Color="{Binding Path=Color, Source={x:Static SystemColors.HighlightBrush}}"/>
+                        </DataGrid.Resources>
+                        <!--DataGrid.ItemsSourceProperty-->
+                        <!--SelectedItem="{Binding Path=SelectedScheduleEntries, Mode=TwoWay}"-->
+                        <!--<DataGrid.Resources>
+                            <Style TargetType="DataGridRow">
+                                <EventSetter Event="MouseDoubleClick" Handler=""/>
+                            </Style>
+                        </DataGrid.Resources>-->
+                        <DataGrid.Columns>
+                            <DataGridTextColumn Header="PlanId" Binding="{Binding ScheduleId}" Visibility="Hidden"/>
+                            <DataGridTextColumn Header="Zaměstnanec" Binding="{Binding Employee}" Width="200"/>
+                            <DataGridTextColumn Header="Stanoviště" Binding="{Binding Station}" Width="120"/>
+                            <DataGridTextColumn Header="Od" Binding="{Binding Schedule.TimeStampFrom, StringFormat=\{0:dd.MM.yyyy HH:mm\}}" Width="150"/>
+                            <DataGridTextColumn Header="Do" Binding="{Binding Schedule.TimeStampTo, StringFormat=\{0:dd.MM.yyyy HH:mm\}}" Width="150" />
+                            <DataGridTextColumn Header="EmployeeId" Binding="{Binding EmployeeId}" Visibility="Hidden"/>
+                            <DataGridTextColumn Header="StationId" Binding="{Binding StationId}" Visibility="Hidden"/>
+                        </DataGrid.Columns>
+                    </DataGrid>
+                </Grid>
             </TabItem>
-            <TabItem Header="Administrace" Margin="-2,-2,-2,2">
-                <StackPanel Orientation="Horizontal"
+            <TabItem Header="Administrace stanovišť a skladníků">
+                <Grid x:Name="AdministraceGrid">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="*" />
+                    </Grid.RowDefinitions>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+
+                    <StackPanel Orientation="Horizontal"
+                                Grid.Column="0"
+                                Grid.Row="0"
                         HorizontalAlignment="Left"
-                        Margin="0,10,10,0"
-                        VerticalAlignment="Top">
-                    <GroupBox Name="stanovisteAdministraceGroupBox"
+                        VerticalAlignment="Top" Grid.ColumnSpan="2">
+                        <GroupBox Name="stanovisteAdministraceGroupBox"
                         Header="Administrace stanovišť"
                         Margin="10,0,0,0"
-                        Height="245"
-                        Width="250"
+                        Height="430"
                         HorizontalAlignment="Left"
                         VerticalAlignment="Top">
-                        <StackPanel Orientation="Vertical"
+                            <Grid x:Name="AdministraceStanovistePridatGrid">
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="*" />
+                                </Grid.RowDefinitions>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="164*" />
+                                    <ColumnDefinition Width="23*"/>
+                                    <ColumnDefinition Width="87*"/>
+                                </Grid.ColumnDefinitions>
+
+                                <StackPanel Orientation="Vertical"
                             HorizontalAlignment="Left"
-                            Margin="0,10,10,0"
-                            VerticalAlignment="Top">
-                            <RadioButton Name="NoveStanovisteAdminRadioButton"
+                            Margin="0,10,0,0"
+                            VerticalAlignment="Top"
+                                        Grid.Column="0"
+                                Grid.Row="0">
+                                    <RadioButton Name="NoveStanovisteAdminRadioButton"
                                     Content="Nové stanoviště"
                                     Height="25"
                                     Margin="10,10,0,0"
                                     HorizontalAlignment="Left"
                                     Click="NoveStanovisteAdminRadioButton_Click" />
-                            <RadioButton Name="OpravaStanovisteAdminRadioButton"
-                                    Content="Oprava stanoviště"
-                                    Height="25"
-                                    Margin="10,0,0,0"
-                                    HorizontalAlignment="Left"
-                                    FontSize="14"
-                                    Click="OpravaStanovisteAdminRadioButton_Click" />
-
-                            <ComboBox x:Name="StanovisteAdministraceComboBox"
-                                    Height="25"
-                                    ItemsSource="{Binding Path=StationEntries}"
-                                    DisplayMemberPath="Name"
-                                    SelectedValuePath="Id"
-                                    SelectedValue="{Binding Path=StationEntries.Name}"
-                                    VerticalAlignment="Top"
-                                    HorizontalAlignment="Left"
-                                    Width="200"
-                                    Margin="10,0,0,0"
-                                    SelectionChanged="StanovisteAdministraceComboBox_SelectionChanged" />
-                            <!--SelectedValue="{Binding Path=StationEntriesCmb}"-->
-
-                            <Label Name="noveOpravaStanovisteAdministraceLabel"
-                                   Content="Nové stanoviště"
-                                   FontSize="14"
-                                   Margin="10,20,0,0" />
-                            <TextBox Name="StanovisteAdministraceTextBox"
+                                    <TextBox Name="NoveStanovisteAdministraceTextBox"
                                     Margin="10,0,0,0"
                                     Height="30"
                                     Width="200"
                                     VerticalContentAlignment="Center"
-                                    Text="{Binding ElementName=StationEntriesCmb, Path=SelectedItem.Name, Mode=TwoWay, UpdateSourceTrigger=LostFocus}" />
-                            <Button Name="UlozitStanovisteAdministrace"
+                                    HorizontalAlignment="Left"
+                                    TextChanged="NoveStanovisteAdministraceTextBox_TextChanged" />
+                                    <!--Text="{Binding Path=Station}"-->
+                                    <!--"{Binding ElementName=NoveStanovisteAdministraceComboBox, Path=SelectedItem.Name, Mode=TwoWay, UpdateSourceTrigger=Explicit}"-->
+                                    <!--StationEntries-->
+                                    <!--UpdateSourceTrigger=LostFocus-->
+                                    <Button Name="UlozitNoveStanovisteAdministrace"
+                                Content="Uložit"
+                                Height="30"
+                                Width="90"
+                                Margin="10,10,0,20"
+                                HorizontalAlignment="Left"
+                                Click="UlozitNoveStanovisteAdministrace_Click"/>
+                                    <RadioButton Name="OpravaStanovisteAdminRadioButton"
+                                    Content="Oprava názvu, aktivace, deaktivace stanoviště"
+                                    Height="25"
+                                    Margin="10,0,10,0"
+                                    HorizontalAlignment="Left"
+                                    FontSize="14"
+                                    Click="OpravaStanovisteAdminRadioButton_Click" />
+
+                                    <ComboBox x:Name="StanovisteAdministraceComboBox"
+                                    Height="25"
+                                    ItemsSource="{Binding StationsList}"
+                                    DisplayMemberPath="Name"
+                                    SelectedValuePath="Id"
+                                    SelectedItem="{Binding StationEntries}"
+                                    VerticalAlignment="Top"
+                                    HorizontalAlignment="Left"
+                                    Width="200"
+                                    Margin="10,0,0,0"
+                                    IsEditable="True"
+                                    IsReadOnly="True"
+                                    Text="Vybrat stanoviště" />
+
+                                    <!--SelectedValue="{Binding Path=StationEntries.Name}"-->
+                                    <Button Name="OdebratStanovisteAdministrace"
+                                Content="Deaktivovat"
+                                Height="30"
+                                Width="90"
+                                Margin="10,10,0,0"
+                                HorizontalAlignment="Left"
+                                Click="OdebratStanovisteAdministrace_Click"/>
+                                    <!--SelectedValue="{Binding Path=StationEntries.Name}"-->
+                                    <Label Name="OpravaStanovisteAdministraceLabel"
+                                   Content="Oprava názvu stanoviště"
+                                   FontSize="14"
+                                   Margin="10,20,0,0" />
+                                    <TextBox Name="StanovisteAdministraceTextBox"
+                                    Margin="10,0,0,0"
+                                    Height="30"
+                                    Width="200"
+                                    HorizontalAlignment="Left"
+                                    VerticalContentAlignment="Center"
+                                    Text="{Binding ElementName=StanovisteAdministraceComboBox, Path=SelectedItem.Name, Mode=TwoWay, UpdateSourceTrigger=Explicit}"/>
+                                    <!--StationEntries-->
+                                    <!--UpdateSourceTrigger=LostFocus-->
+                                    <Button Name="UlozitOpravaStanovisteAdministrace"
                                 Content="Uložit"
                                 Height="30"
                                 Width="90"
                                 Margin="10,10,0,0"
                                 HorizontalAlignment="Left"
-                                Click="UlozitStanovisteAdministrace_Click"/>
-                        </StackPanel>
-                    </GroupBox>
-                    <GroupBox Name="zamestnanciAdministraceGroupBox"
+                                Click="UlozitOpravaStanovisteAdministrace_Click"/>
+                                    <!--Command="{Binding AddNewStationEntries}"-->
+                                    <!--Click="UlozitStanovisteAdministrace_Click"-->
+                                </StackPanel>
+                                <StackPanel Orientation="Vertical"
+                            HorizontalAlignment="Left"
+                            Margin="328,10,0,0"
+                            VerticalAlignment="Top"
+                                Grid.Row="0" Grid.ColumnSpan="3">
+                                    <Label Name="AktivivatStanovisteAdministraceLabel"
+                                   Content="Aktivace stanoviště"
+                                   FontSize="14"
+                                   Margin="10,140,0,0" />
+                                    <ComboBox x:Name="AktivovatStanovisteAdministraceComboBox"
+                                    Height="25"
+                                    ItemsSource="{Binding ActivateStationsList}"
+                                    DisplayMemberPath="Name"
+                                    SelectedValuePath="Id"
+                                    SelectedItem="{Binding ActivateStationEntries}"
+                                    VerticalAlignment="Top"
+                                    HorizontalAlignment="Left"
+                                    Width="200"
+                                    Margin="10,0,0,0"
+                                    IsEditable="True"
+                                    IsReadOnly="True"
+                                    Text="Vybrat stanoviště"/>
+
+                                    <!--SelectedValue="{Binding Path=StationEntries.Name}"-->
+                                    <Button Name="AktivovatStanovisteAdministrace"
+                                Content="Aktivovat"
+                                Height="30"
+                                Width="90"
+                                Margin="10,10,0,0"
+                                HorizontalAlignment="Left"
+                                Click="AktivovatStanovisteAdministrace_Click"/>
+
+
+                                </StackPanel>
+                            </Grid>
+
+                        </GroupBox>
+                        <GroupBox Name="ZamestnanciAdministraceGroupBox"
                               Header="Administrace zaměstnanců"
                               Margin="10,0,0,0"
-                              Height="320"
+                              Height="430"
                               Width="280"
                               HorizontalAlignment="Left"
                               VerticalAlignment="Top">
-                        <StackPanel Orientation="Vertical"
+                            <StackPanel Orientation="Vertical"
                             HorizontalAlignment="Left"
                             Margin="0,10,10,0"
                             VerticalAlignment="Top">
-                            <Label Name="seznamSkladnikuAdministraceLabel"
-                                   Content="Skladníci, vláčkaři a správci"
+                                <Label Name="seznamSkladnikuAdministraceLabel"
+                                   Content="Skladníci a vláčkaři"
                                    FontSize="14"
                                    Margin="10,0,0,0" />
-                            <ComboBox x:Name="zamestnanciAdministraceComboBox"
+                                <ComboBox x:Name="SkladniciAdministraceComboBox"
                                       Height="25"
-                                      ItemsSource="{Binding Path=EmployeeEntries}"
+                                      ItemsSource="{Binding Path=EmployeeWarehousemanEntries}"
                                       DisplayMemberPath="FullName"
                                       SelectedValuePath="Id"
                                       SelectedValue="{Binding Path=Employee}"
                                       VerticalAlignment="Top"
                                       HorizontalAlignment="Left"
                                       Width="200"
-                                      Margin="10,0,0,0" />
-                            <Button Name="OdebratSkladnikaAdministraceButton"
+                                      Margin="10,0,0,0"
+                                      IsEditable="True"
+                                      IsReadOnly="True"
+                                      Text="Vybrat skladníka"/>
+                                <Button Name="OdebratSkladnikaAdministraceButton"
                                     Content="Odebrat"
                                     Height="30"
                                     Width="90"
                                     Margin="10,10,0,0"
-                                    HorizontalAlignment="Left" />
-                            <Label Name="seznamVsechZamAdministraceLabel"
+                                    HorizontalAlignment="Left"
+                                    Click="OdebratSkladnikaAdministraceButton_Click"/>
+                                <Label Name="seznamSpravciAdministraceLabel"
+                                   Content="Správci"
+                                   FontSize="14"
+                                   Margin="10,0,0,0" />
+                                <ComboBox x:Name="SpravciAdministraceComboBox"
+                                      Height="25"
+                                      ItemsSource="{Binding Path=EmployeeAdminEntries}"
+                                      DisplayMemberPath="FullName"
+                                      SelectedValuePath="Id"
+                                      SelectedValue="{Binding Path=Employee}"
+                                      VerticalAlignment="Top"
+                                      HorizontalAlignment="Left"
+                                      Width="200"
+                                      Margin="10,0,0,0"
+                                      IsEditable="True"
+                                      IsReadOnly="True"
+                                      Text="Vybrat správce"/>
+                                <Button Name="OdebratSpravceAdministraceButton"
+                                    Content="Odebrat"
+                                    Height="30"
+                                    Width="90"
+                                    Margin="10,10,0,0"
+                                    HorizontalAlignment="Left"
+                                    Click="OdebratSpravceAdministraceButton_Click"/>
+                                <Label Name="seznamVsechZamAdministraceLabel"
                                    Content="Seznam všech zaměstnanců"
                                    FontSize="14"
                                    Margin="10,10,0,0" />
-                            <ComboBox x:Name="zamestnanciAdministratceComboBox"
+                                <ComboBox x:Name="ZamestnanciAdministratceComboBox"
                                       Height="25"
                                       ItemsSource="{Binding Path=EmployeeAllEntries}"
                                       DisplayMemberPath="FullName"
@@ -205,39 +405,53 @@
                                       VerticalAlignment="Top"
                                       HorizontalAlignment="Left"
                                       Width="200"
-                                      Margin="10,0,0,0"/>
-                            <StackPanel Orientation="Horizontal"
+                                      Margin="10,0,0,0"
+                                      IsEditable="True"
+                                      IsReadOnly="True"
+                                      Text="Vybrat zaměstnance"/>
+                                <StackPanel Orientation="Horizontal"
                                         HorizontalAlignment="Left"
                                         Margin="0,10,10,0"
                                         VerticalAlignment="Top">
-                                <RadioButton Name="SkladnikVolbaFunkceAdminRadioButton"
+                                    <RadioButton Name="SkladnikVolbaFunkceAdminRadioButton"
                                              Content="Skladník, vláčkař"
                                              Height="25"
                                              Margin="10,10,0,0"
                                              HorizontalAlignment="Left" />
-                                <RadioButton Name="SpravceVolbyFunkceAdminRadioButton"
+                                    <RadioButton Name="SpravceVolbyFunkceAdminRadioButton"
                                              Content="Správce"
                                              Height="25"
                                              Margin="10,10,0,0"
-                                             HorizontalAlignment="Left" />
-                            </StackPanel>
-                            <Button Name="PridatSkladnikaAdministraceButton"
+                                             HorizontalAlignment="Left"/>
+                                </StackPanel>
+                                <Button Name="PridatSkladnikaManazeraAdministraceButton"
                                     Content="Přidat"
                                     Height="30"
                                     Width="90"
                                     Margin="10,10,0,0"
-                                    HorizontalAlignment="Left" />
-                        </StackPanel>
-                    </GroupBox>
-                </StackPanel>
+                                    HorizontalAlignment="Left"
+                                        Click="PridatSkladnikaManazeraAdministraceButton_Click"/>
+                            </StackPanel>
+                        </GroupBox>
+                    </StackPanel>
+                </Grid>
             </TabItem>
             <TabItem Header="Stanoviště">
-                <!--Height="450"-->
-                <DataGrid x:Name="zakazkySpravceDataGrid"
-                  HorizontalAlignment="Stretch"
-                  Height="380"
+                <Grid x:Name="StanovisteGrid">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="*" />
+                    </Grid.RowDefinitions>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*" />
+                    </Grid.ColumnDefinitions>
+                    <!--<ColumnDefinition Width="325*" />
+                    <ColumnDefinition Width="629*"/>-->
+
+                    <DataGrid x:Name="zakazkySpravceDataGrid"
+                              Grid.Row="0"
+                              Grid.Column="0"
+                  
                   Margin="10,10,10,10"
-                  VerticalAlignment="Top"
                   Background="LightGray"
                   RowBackground="LightYellow"
                   AlternatingRowBackground="LightBlue"
@@ -245,22 +459,223 @@
                   SelectionMode="Single"
                   IsReadOnly="true"
                   AutoGenerateColumns="False"
-                  ItemsSource="{Binding Path=ProductionOrderEntries}">
-                    <!--ItemsSource="{Binding View}"-->
-                    <!--AutoGenerateColumns="False" - vypne automatické vkládání sloupců z modelu-->
+                  ItemsSource="{Binding Path=ProductionOrderEntries}" Grid.ColumnSpan="2">
+                        <!--Height="380"-->
+                        <!--ItemsSource="{Binding View}"-->
+                        <!--AutoGenerateColumns="False" - vypne automatické vkládání sloupců z modelu-->
 
-                    <DataGrid.Columns>
-                        <DataGridTextColumn Header="Zakázka správce" Width="150" Binding="{Binding Path=ProductionOrder.Order}" />
-                        <DataGridTextColumn Header="Množství správce" Width="150" Binding="{Binding Path=ProductionOrder.Quantity}" />
-                        <DataGridTextColumn Header="Výrobek správce" Width="100" Binding="{Binding Path=Product.Name}" />
-                    </DataGrid.Columns>
-                </DataGrid>
+                        <DataGrid.Columns>
+                            <DataGridTextColumn Header="Zakázka správce" Width="150" Binding="{Binding Path=ProductionOrder.Order}" />
+                            <DataGridTextColumn Header="Množství správce" Width="150" Binding="{Binding Path=ProductionOrder.Quantity}" />
+                            <DataGridTextColumn Header="Výrobek správce" Width="100" Binding="{Binding Path=Product.Name}" />
+                        </DataGrid.Columns>
+                    </DataGrid>
+                </Grid>
             </TabItem>
             <TabItem Header="Materiál na stanoviště">
+                <Grid x:Name="MaterialNaStanovisteGrid">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="*" />
+                    </Grid.RowDefinitions>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="300" />
+                        <ColumnDefinition Width="300"/>
+                    </Grid.ColumnDefinitions>
+                    <GroupBox Name="pridatMaterialAdministraceGroupBox"
+                        Header="Přidat materiál na stanoviště"
+                        Margin="10,10,10,10"
+                        HorizontalAlignment="Stretch"
+                        VerticalAlignment="Stretch"
+                        Grid.Row="0"
+                        Grid.Column="0">
+                        <StackPanel Orientation="Vertical"
+                        HorizontalAlignment="Stretch"
+                        VerticalAlignment="Stretch">
+                            <Label Name="VolbaStanovisteMaterialPridatLabel"
+                                   Content="Výběr stanoviště"
+                                   FontSize="14"
+                                   Margin="10,10,0,0" />
+                            <ComboBox x:Name="VolbaStanovisteMaterialPridatComboBox"
+                                    Height="25"
+                                    ItemsSource="{Binding Path=StationsList}"
+                                    DisplayMemberPath="Name"
+                                    SelectedValuePath="Id"
+                                    SelectedValue="{Binding StationPridelenoEntries}"
+                                    VerticalAlignment="Top"
+                                    HorizontalAlignment="Left"
+                                    Width="140"
+                                    Margin="10,0,0,0"
+                                    IsEditable="True"
+                                    IsReadOnly="True"
+                                    Text="Vybrat stanoviště"/>
+                            <!--IsSynchronizedWithCurrentItem="True"-->
+                            <!--SelectedIndex="0"-->
 
+                            <!--ItemsSource="{Binding Path=StationEntries}"-->
+                            <!--SelectedValue="{Binding Path=StationEntries.Name}"-->
+                            <!--EnableColumnVirtualization="False"
+                                        EnableRowVirtualization="False"-->
+                            <DataGrid x:Name="PridatMaterialDataGrid"
+                                    EnableRowVirtualization="True"
+                                    EnableColumnVirtualization="True"
+                                    VirtualizingStackPanel.VirtualizationMode="Standard"
+                  HorizontalAlignment="Stretch"
+                  Height="280"
+                  Margin="10,10,10,10"
+                  Background="LightGray"
+                  RowBackground="LightYellow"
+                  AlternatingRowBackground="LightBlue"
+                  CanUserReorderColumns="false"
+                  SelectionMode="Single"
+                  AutoGenerateColumns="False"
+                  IsReadOnly="True"
+                  ItemsSource="{Binding Path=MaterialForStationPridelitEntries}">
+                                <!--IsReadOnly="true"-->
+                                <!--ItemsSource="{Binding View}"-->
+                                <!--AutoGenerateColumns="False" - vypne automatické vkládání sloupců z modelu-->
+
+                                <DataGrid.Columns>
+                                    <DataGridTextColumn x:Name="MaterialPridat"
+                                                        Header="Materiál"
+                                                        Width="140"
+                                                        Binding="{Binding Path=MaterialName}" />
+                                    <DataGridTemplateColumn Header="Přidat" Width="70">
+                                        <DataGridTemplateColumn.CellTemplate >
+                                            <DataTemplate>
+                                                <CheckBox x:Name="PridatMaterialNaStanoviste" 
+                                                          HorizontalAlignment="Center"
+                                                          VerticalAlignment="Center"
+                                                          IsChecked="{Binding MaterialPridatOdebrat, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+                                                <!--IsSomethingHereYourData IsChecked="{Binding Path=IsSelected, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"-->
+                                            </DataTemplate>
+                                        </DataGridTemplateColumn.CellTemplate>
+                                    </DataGridTemplateColumn>
+                                    <!--<DataGridCheckBoxColumn x:Name="tosend" 
+                                       Binding="{Binding to_send, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                       Width="100" 
+                                       Header="To Send"
+                                       IsThreeState="False"
+                                       ElementStyle="{StaticResource {x:Type CheckBox}}"/>-->
+                                </DataGrid.Columns>
+                            </DataGrid>
+                            <Button Name="UlozitPridatMaterialButton"
+                                Content="Přidat"
+                                Height="30"
+                                Width="90"
+                                Margin="10,0,0,0"
+                                HorizontalAlignment="Left"
+                                Command="{Binding AddNewStationEntries}"
+                                Click="UlozitPridatMaterialButton_Click"/>
+                        </StackPanel>
+                    </GroupBox>
+                    <!--Click="UlozitPridatStanovisteAdministrace_Click"-->
+                    <GroupBox Name="OdebratMaterialAdministraceGroupBox"
+                        Header="Odebrat materiál ze stanoviště"
+                        Margin="10,10,10,10"
+                        HorizontalAlignment="Stretch"
+                        VerticalAlignment="Stretch"
+                              Grid.Row="0"
+                              Grid.Column="1">
+                        <StackPanel Orientation="Vertical"
+                        HorizontalAlignment="Stretch"
+                        VerticalAlignment="Stretch">
+                            <Label Name="VolbaStanovisteMaterialOdebratLabel"
+                                   Content="Výběr stanoviště"
+                                   FontSize="14"
+                                   Margin="10,10,0,0" />
+                            <ComboBox x:Name="VolbaStanovisteMaterialPridelenoComboBox"
+                                    Height="25"
+                                    ItemsSource="{Binding Path=StationsList}"
+                                    DisplayMemberPath="Name"
+                                    SelectedValuePath="Id"
+                                    SelectedValue="{Binding StationPridelenoEntries}"
+                                    VerticalAlignment="Top"
+                                    HorizontalAlignment="Left"
+                                    Width="140"
+                                    Margin="10,0,0,0"
+                                    IsEditable="True"
+                                    IsReadOnly="True"
+                                    Text="Vybrat stanoviště"/>
+                            <!--StationOdebratEntries-->
+                            <!--SelectedStationId-->
+                            <!--SelectedIndex="0"-->
+                            <!--IsSynchronizedWithCurrentItem="True"-->
+
+                            <!--EnableRowVirtualization="false"-->
+                            <DataGrid x:Name="PridelenyMaterialDataGrid"
+                                      EnableRowVirtualization="True"
+                                      EnableColumnVirtualization="True"
+                                      VirtualizingStackPanel.VirtualizationMode="Standard"
+                  HorizontalAlignment="Stretch"
+                  VerticalAlignment="Top"
+                  Height="280"
+                  Margin="10,10,10,10"
+                  Background="LightGray"
+                  RowBackground="LightYellow"
+                  AlternatingRowBackground="LightBlue"
+                  CanUserReorderColumns="false"
+                  SelectionMode="Single"
+                  AutoGenerateColumns="False"
+                  IsReadOnly="True"
+                  ItemsSource="{Binding Path=MaterialForStationPridelenoEntries}">
+                                <!--k čemu je následující vlastnost-->
+                                <!--VirtualizingStackPanel.IsVirtualizing="True"-->
+                                <!--IsReadOnly="true"-->
+                                <!--ItemsSource="{Binding View}"-->
+                                <!--AutoGenerateColumns="False" - vypne automatické vkládání sloupců z modelu-->
+
+                                <DataGrid.Columns>
+                                    <DataGridTextColumn x:Name="MaterialOdebrat"
+                                                        Header="Materiál"
+                                                        Width="140"
+                                                        Binding="{Binding Path=MaterialName}" />
+
+                                    <DataGridTemplateColumn Header="Odebrat" Width="70">
+                                        <DataGridTemplateColumn.CellTemplate >
+                                            <DataTemplate>
+                                                <CheckBox x:Name="OdebratMaterialNaStanoviste" 
+                                                          HorizontalAlignment="Center"
+                                                          VerticalAlignment="Center"
+                                                          IsChecked="{Binding MaterialPridatOdebrat, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+                                                <!--IsSomethingHereYourData IsChecked="{Binding Path=IsSelected, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"-->
+                                            </DataTemplate>
+                                        </DataGridTemplateColumn.CellTemplate>
+                                    </DataGridTemplateColumn>
+                                </DataGrid.Columns>
+                            </DataGrid>
+                            <Button Name="UlozitOdebratMaterialButton"
+                                Content="Odebrat"
+                                Height="30"
+                                Width="90"
+                                Margin="10,0,0,0"
+                                HorizontalAlignment="Left"
+                                Command="{Binding AddNewStationEntries}"
+                                Click="UlozitOdebratMaterialButton_Click"/>
+                        </StackPanel>
+                        <!--Click="UlozitOdebratStanovisteAdministrace_Click"-->
+                    </GroupBox>
+                </Grid>
             </TabItem>
-            <TabItem Header="Import zakázek">
 
+            <TabItem Header="Import výrobků">
+                <Grid x:Name="ImportVyrobku">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="*" />
+                    </Grid.RowDefinitions>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*" />
+                    </Grid.ColumnDefinitions>
+
+                    <Button Name="ImportVyrobkuButton"
+                            Grid.Row="0"
+                            Grid.Column="0"
+                        Content="Import výrobků"
+                        Height="30"
+                        Width="120"
+                        Margin="10,10,0,0"
+                        HorizontalAlignment="Left"
+                        VerticalAlignment="Top" Click="ImportVyrobkuButton_Click" />
+                </Grid>
             </TabItem>
         </TabControl>
     </Grid>

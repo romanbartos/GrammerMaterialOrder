@@ -42,29 +42,23 @@ namespace GrammerMaterialOrder.MVVM.ViewModels
 
         private static ObservableCollection<Product> LoadProducts()
         {
-            using (var db = new MaterialOrderContext())
-            {
-                List<Product> products = db.Products.ToList();
-                return new ObservableCollection<Product>(products);
-            }
+            using var db = new MaterialOrderContext();
+            List<Product> products = db.Products.ToList();
+            return new ObservableCollection<Product>(products);
         }
 
         private static ObservableCollection<ProductionOrder> LoadProductionOrders()
         {
-            using (var db = new MaterialOrderContext())
-            {
-                List<ProductionOrder> productionOrders = db.ProductionOrders.ToList();
-                return new ObservableCollection<ProductionOrder>(productionOrders);
-            }
+            using var db = new MaterialOrderContext();
+            List<ProductionOrder> productionOrders = db.ProductionOrders.ToList();
+            return new ObservableCollection<ProductionOrder>(productionOrders);
         }
 
         private static ObservableCollection<Employee> LoadEmployees()
         {
-            using (var db = new EmployeeContext())
-            {
-                List<Employee> employees = db.Employees.ToList();
-                return new ObservableCollection<Employee>(employees);
-            }
+            using var db = new EmployeeContext();
+            List<Employee> employees = db.Employees.ToList();
+            return new ObservableCollection<Employee>(employees);
         }
 
         private struct DataOrders

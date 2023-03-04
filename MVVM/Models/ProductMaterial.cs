@@ -1,16 +1,15 @@
-﻿using System.Collections.Generic;
-using System.ComponentModel;
-using System.ComponentModel.DataAnnotations;
+﻿using System.ComponentModel;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace GrammerMaterialOrder.MVVM.Models
 {
-    [Table("Material", Schema = "dbo")]
-    public class Material
+    [Table("VyrobekMaterial", Schema = "dbo")]
+
+    public class ProductMaterial
     {
         private int _id;
-        //[Key]
-        [Column("MaterialID")]
+
+        [Column("VyrobekMaterialID")]
         public int Id
         {
             get
@@ -24,21 +23,41 @@ namespace GrammerMaterialOrder.MVVM.Models
             }
         }
 
-        private string _material;
+        private int _productId;
 
-        [Column("Nazev")]
-        public string Name
+        //[ForeignKey("VyrobekId")]
+        [Column("VyrobekID")]
+        public int ProductId
         {
             get
             {
-                return _material;
+                return _productId;
             }
             set
             {
-                _material = value;
-                OnPropertyChanged(nameof(Name));
+                _productId = value;
+                OnPropertyChanged(nameof(ProductId));
             }
         }
+        //public Product Product { get; set; }
+
+        private int _materialId;
+
+        //[ForeignKey("MaterialId")]
+        [Column("MaterialID")]
+        public int MaterialId
+        {
+            get
+            {
+                return _materialId;
+            }
+            set
+            {
+                _materialId = value;
+                OnPropertyChanged(nameof(MaterialId));
+            }
+        }
+        //public Material Material { get; set; }
 
         private byte _stateObject;
 
@@ -56,7 +75,6 @@ namespace GrammerMaterialOrder.MVVM.Models
             }
         }
 
-        //public List<ProductMaterial> ProductsMaterials { get; set; }
         public event PropertyChangedEventHandler PropertyChanged;
         private void OnPropertyChanged(string propertyName)
         {

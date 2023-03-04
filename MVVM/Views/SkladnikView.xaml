@@ -6,9 +6,9 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:GrammerMaterialOrder.MVVM.Views"
              mc:Ignorable="d" 
-             d:DesignHeight="450" d:DesignWidth="800">
+             d:DesignHeight="450">
     <Grid>
-        <DataGrid x:Name="zakazkySkladnikDataGrid"
+        <DataGrid x:Name="ZakazkySkladnikDataGrid"
                   Height="450"
                   HorizontalAlignment="Stretch"
                   Margin="20,20,20,0"
@@ -20,10 +20,16 @@
                   SelectionMode="Single"
                   IsReadOnly="true"
                   AutoGenerateColumns="False"
-                  ItemsSource="{Binding Path=ProductionOrderEntries}">
+                  EnableRowVirtualization="True"
+                  ItemsSource="{Binding Path=ProductionOrderEntries , Mode=TwoWay, NotifyOnSourceUpdated=True, UpdateSourceTrigger=PropertyChanged}">
             <!--AutoGenerateColumns="False" - vypne automatické vkládání sloupců z modelu-->
         
             <DataGrid.Columns>
+                <DataGridTextColumn x:Name="ZakazkaId"
+                                    Header="ZakazkaId"
+                                    Width="0"
+                                    Visibility="Hidden"
+                                    Binding="{Binding Path=ProductionOrder.Id}" />
                 <DataGridTextColumn x:Name="Zakazka"
                                     Header="Zakázka skladník"
                                     Width="150"
@@ -34,12 +40,21 @@
                                     Binding="{Binding Path=ProductionOrder.Quantity}" />
                 <DataGridTextColumn x:Name="Vyrobek"
                                     Header="Výrobek skladník"
-                                    Width="150" Binding="{Binding Path=Product.Name}" />
+                                    Width="150"
+                                    Binding="{Binding Path=Product.Name}" />
                 <DataGridTemplateColumn Header="Hotovo" Width="100">
                     <DataGridTemplateColumn.CellTemplate>
                         <DataTemplate>
                             <Button x:Name="Hotovo"
                                     Content="Hotovo" Click="Hotovo_Click" /> 
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                </DataGridTemplateColumn>
+                <DataGridTemplateColumn Header="Nedokončeno" Width="130">
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <Button x:Name="Nedokonceno"
+                                    Content="Nedokončeno" Click="Nedokonceno_Click" />
                         </DataTemplate>
                     </DataGridTemplateColumn.CellTemplate>
                 </DataGridTemplateColumn>

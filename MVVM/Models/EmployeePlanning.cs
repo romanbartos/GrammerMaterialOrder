@@ -87,13 +87,42 @@ namespace GrammerMaterialOrder.MVVM.Models
             }
         }
 
+        private bool _assigned;
+
+        [Column("Prideleno")]
+        public bool Assigned
+        {
+            get
+            {
+                return _assigned;
+            }
+            set
+            {
+                _assigned = value;
+                OnPropertyChanged(nameof(Assigned));
+            }
+        }
+
+        private byte _stateObject;
+
+        [Column("StavObjektu")]
+        public byte StateObject
+        {
+            get
+            {
+                return _stateObject;
+            }
+            set
+            {
+                _stateObject = value;
+                OnPropertyChanged(nameof(StateObject));
+            }
+        }
+
         public event PropertyChangedEventHandler PropertyChanged;
         private void OnPropertyChanged(string propertyName)
         {
-            if (PropertyChanged != null)
-            {
-                PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
-            }
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
 
     }

@@ -1,16 +1,14 @@
-﻿using System.Collections.Generic;
-using System.ComponentModel;
-using System.ComponentModel.DataAnnotations;
+﻿using System.ComponentModel;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace GrammerMaterialOrder.MVVM.Models
 {
-    [Table("Material", Schema = "dbo")]
-    public class Material
+    [Table("Distribution", Schema = "dbo")]
+    public class Distribution
     {
         private int _id;
         //[Key]
-        [Column("MaterialID")]
+        [Column("RozdeleniID")]
         public int Id
         {
             get
@@ -24,18 +22,18 @@ namespace GrammerMaterialOrder.MVVM.Models
             }
         }
 
-        private string _material;
+        private string _rozdeleni;
 
         [Column("Nazev")]
         public string Name
         {
             get
             {
-                return _material;
+                return _rozdeleni;
             }
             set
             {
-                _material = value;
+                _rozdeleni = value;
                 OnPropertyChanged(nameof(Name));
             }
         }

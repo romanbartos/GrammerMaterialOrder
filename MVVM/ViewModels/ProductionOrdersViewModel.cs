@@ -25,26 +25,22 @@ namespace GrammerMaterialOrder.MVVM.ViewModels
             var colProductionOrders = LoadProductionOrders();
             var query = from productionOrder in colProductionOrders
                         join product in colProducts on productionOrder.ProductId equals product.Id
-                        select new Data() { OrderName = productionOrder.Order, Quantity = productionOrder.Quantity, ProductName = product.Name};
+                        select new Data() { OrderName = productionOrder.Order, Quantity = productionOrder.Quantity, ProductName = product.Name, StateObject = product.StateObject};
             return new ObservableCollection<Data>(query);
         }
 
         private static ObservableCollection<Product> LoadProducts()
         {
-            using (var db = new MaterialOrderContext())
-            {
-                var products = db.Products.ToList();
-                return new ObservableCollection<Product>(products);
-            }
+            using var db = new MaterialOrderContext();
+            var products = db.Products.ToList();
+            return new ObservableCollection<Product>(products);
         }
 
         private static ObservableCollection<ProductionOrder> LoadProductionOrders()
         {
-            using (var db = new MaterialOrderContext())
-            {
-                var productionOrders = db.ProductionOrders.ToList();
-                return new ObservableCollection<ProductionOrder>(productionOrders);
-            }
+            using var db = new MaterialOrderContext();
+            var productionOrders = db.ProductionOrders.ToList();
+            return new ObservableCollection<ProductionOrder>(productionOrders);
         }
 
         private struct Data
@@ -52,6 +48,7 @@ namespace GrammerMaterialOrder.MVVM.ViewModels
             public string OrderName { get; set; }
             public int Quantity { get; set; }
             public string ProductName { get; set; }
+            public byte StateObject { get; set; }
         }
     }
 }

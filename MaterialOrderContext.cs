@@ -7,10 +7,14 @@ namespace GrammerMaterialOrder
     public class MaterialOrderContext : DbContext
     {
         public DbSet<Product> Products { get; set; }
+        //public DbSet<ProductMaterial> ProductsMaterials { get; set; }
+        //public DbSet<Material> Materials { get; set; }
         public DbSet<ProductionOrder> ProductionOrders { get; set; }
         public DbSet<ProdOrderEmployeePlan> ProdOrdersEmployeePlan { get; set; }
         public DbSet<EmployeePlanning> EmployeePlanning { get; set; }
         public DbSet<Station> Stations { get; set; }
+        public DbSet<Material> Materials { get; set; }
+        public DbSet<MaterialForStation> MaterialForStation { get; set; }
 
         //proč je tady ta metoda
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
