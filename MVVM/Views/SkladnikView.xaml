@@ -7,6 +7,11 @@
              xmlns:local="clr-namespace:GrammerMaterialOrder.MVVM.Views"
              mc:Ignorable="d" 
              d:DesignHeight="450">
+
+    <!--<UserControl.Background>
+        <converters:WorkerToColorMultiConverter x:Key="WorkerToColorMultiConverter" />
+    </UserControl.Background>-->
+
     <Grid>
         <DataGrid x:Name="ZakazkySkladnikDataGrid"
                   Height="450"
@@ -23,42 +28,117 @@
                   EnableRowVirtualization="True"
                   ItemsSource="{Binding Path=ProductionOrderEntries , Mode=TwoWay, NotifyOnSourceUpdated=True, UpdateSourceTrigger=PropertyChanged}">
             <!--AutoGenerateColumns="False" - vypne automatické vkládání sloupců z modelu-->
-        
             <DataGrid.Columns>
                 <DataGridTextColumn x:Name="ZakazkaId"
                                     Header="ZakazkaId"
                                     Width="0"
                                     Visibility="Hidden"
-                                    Binding="{Binding Path=ProductionOrder.Id}" />
+                                    Binding="{Binding Path=ProductionOrderId}" />
                 <DataGridTextColumn x:Name="Zakazka"
-                                    Header="Zakázka skladník"
+                                    Header="Zakázka"
                                     Width="150"
-                                    Binding="{Binding Path=ProductionOrder.Order}" />
+                                    Binding="{Binding Path=OrderName}" />
                 <DataGridTextColumn x:Name="Mnozstvi"
-                                    Header="Množství skladník"
-                                    Width="150"
-                                    Binding="{Binding Path=ProductionOrder.Quantity}" />
+                                    Header="Množství"
+                                    Width="80"
+                                    Binding="{Binding Path=OrderQuantity}" />
                 <DataGridTextColumn x:Name="Vyrobek"
-                                    Header="Výrobek skladník"
-                                    Width="150"
-                                    Binding="{Binding Path=Product.Name}" />
-                <DataGridTemplateColumn Header="Hotovo" Width="100">
+                                    Header="Výrobek"
+                                    Width="120"
+                                    Binding="{Binding Path=ProductName}" />
+                <DataGridTemplateColumn Header="Zavezeno" Width="100">
                     <DataGridTemplateColumn.CellTemplate>
                         <DataTemplate>
                             <Button x:Name="Hotovo"
-                                    Content="Hotovo" Click="Hotovo_Click" /> 
+                                    Content="{Binding Path=ButtonTextSkladnik}" Click="Hotovo_Click">
+
+                                <Button.Style>
+                                    <Style TargetType="Button">
+                                        <Setter Property="Background" Value="#DDDDDD"/>
+                                        <Style.Triggers>
+                                            <DataTrigger Binding="{Binding}" Value="Potvrdit">
+                                                <Setter Property="Background" Value="Green"/>
+                                            </DataTrigger>
+                                        </Style.Triggers>
+                                    </Style>
+                                </Button.Style>
+
+                            </Button>
                         </DataTemplate>
                     </DataGridTemplateColumn.CellTemplate>
                 </DataGridTemplateColumn>
-                <DataGridTemplateColumn Header="Nedokončeno" Width="130">
+                <DataGridTemplateColumn Header="Poznámka" Width="110">
                     <DataGridTemplateColumn.CellTemplate>
                         <DataTemplate>
-                            <Button x:Name="Nedokonceno"
-                                    Content="Nedokončeno" Click="Nedokonceno_Click" />
+                            <Button x:Name="Poznamka"
+                                    Content="Vložit" Click="Poznamka_Click">
+                            </Button>
                         </DataTemplate>
                     </DataGridTemplateColumn.CellTemplate>
                 </DataGridTemplateColumn>
+                <DataGridTextColumn x:Name="Station1"
+                                    Header="Stanoviště 1"
+                                    Width="100"
+                                    Binding="{Binding Path=EmplPlanDoneSt1}">
+                    <DataGridTextColumn.ElementStyle>
+                        <Style TargetType="{x:Type TextBlock}">
+                            <Style.Triggers>
+                                <Trigger Property="Text" Value="True">
+                                    <Setter Property="Foreground" Value="LightGreen"/>
+                                    <Setter Property="Background" Value="LightGreen"/>
+                                </Trigger>
+                            </Style.Triggers>
+                        </Style>
+                    </DataGridTextColumn.ElementStyle>
+                </DataGridTextColumn>
+                <DataGridTextColumn x:Name="Station2"
+                                    Header="Stanoviště 2"
+                                    Width="100"
+                                    Binding="{Binding Path=EmplPlanDoneSt2}">
+                    <DataGridTextColumn.ElementStyle>
+                        <Style TargetType="{x:Type TextBlock}">
+                            <Style.Triggers>
+                                <Trigger Property="Text" Value="True">
+                                    <Setter Property="Foreground" Value="LightGreen"/>
+                                    <Setter Property="Background" Value="LightGreen"/>
+                                </Trigger>
+                            </Style.Triggers>
+                        </Style>
+                    </DataGridTextColumn.ElementStyle>
+                </DataGridTextColumn>
+                <DataGridTextColumn x:Name="Station3"
+                                    Header="Stanoviště 3"
+                                    Width="100"
+                                    Binding="{Binding Path=EmplPlanDoneSt3}">
+                    <DataGridTextColumn.ElementStyle>
+                        <Style TargetType="{x:Type TextBlock}">
+                            <Style.Triggers>
+                                <Trigger Property="Text" Value="True">
+                                    <Setter Property="Foreground" Value="LightGreen"/>
+                                    <Setter Property="Background" Value="LightGreen"/>
+                                </Trigger>
+                            </Style.Triggers>
+                        </Style>
+                    </DataGridTextColumn.ElementStyle>
+                </DataGridTextColumn>
+
+                <!--<DataGridTextColumn Header="1" Binding="{Binding Col1}">
+                    <DataGridTextColumn.ElementStyle>
+                        <Style TargetType="{x:Type TextBlock}">
+                            <Setter Property="Background">
+                                <Setter.Value>
+                                    <MultiBinding Converter="{StaticResource WorkerToColorMultiConverter}">
+                                        <Binding Path="Col1" />
+                                        <Binding Path="Worker" />
+                                    </MultiBinding>
+                                </Setter.Value>
+                            </Setter>
+                        </Style>
+                    </DataGridTextColumn.ElementStyle>
+                </DataGridTextColumn>-->
+
             </DataGrid.Columns>
+            <!--StationId       ProdOEP.Done-->
         </DataGrid>
 
     </Grid>
